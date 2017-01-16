@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 
 public class RoundInfo {
 	
-	public static int ROUND_LENGTH = 24;
+	public static int ROUND_LENGTH = 26;
 
 	@Id
 	private String id;
