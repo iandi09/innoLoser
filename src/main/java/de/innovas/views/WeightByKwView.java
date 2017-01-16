@@ -104,7 +104,11 @@ public class WeightByKwView extends VerticalLayout implements View {
 			BigDecimal weight = getNewWeightEntry();
 			if (name != null && weight != null) {
 				addWeightEntry();
+				Notification.show("Eintrag hinzugefügt");
 				weightField.setValue(null);
+				if (!weightTable.isVisible()) {
+					weightTable.setVisible(true);
+				}
 			} else {
 				Notification.show("Bitte Namen und Gewicht angeben");
 			}
