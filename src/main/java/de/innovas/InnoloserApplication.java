@@ -20,7 +20,7 @@ public class InnoloserApplication implements CommandLineRunner {
 	@Override
 	public void run(String... arg0) throws Exception {
 		if (!userService.isAnyUserRegistered()) {
-			userService.registerUser("admin", "Bla1234", true);
+			userService.registerUser("admin", "admin", true);
 		}
 		
 	}
