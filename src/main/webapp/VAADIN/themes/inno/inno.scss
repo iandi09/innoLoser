@@ -1,0 +1,10 @@
+@import "../valo/valo.scss";
+
+@mixin inno {
+  @include valo;
+  .v-horizontal .v-button {
+    margin-top: 25px;
+  }
+}
+
+@include inno;
