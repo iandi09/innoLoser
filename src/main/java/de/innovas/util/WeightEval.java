@@ -8,6 +8,10 @@ public class WeightEval {
 	int minWeightKw;
 	int fails;
 	
+	public WeightEval(BigDecimal minWeight, int minWeightKw) {
+		this.minWeight = minWeight;
+		this.minWeightKw = minWeightKw;
+	}
 	public BigDecimal getMinWeight() {
 		return minWeight;
 	}

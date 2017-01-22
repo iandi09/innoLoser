@@ -12990,9 +12990,9 @@ h1.no-margin, .v-label-h1.no-margin, h2.no-margin, .v-label-h2.no-margin, h3.no-
 }
 
 .v-table .v-table-cell-content-red {
-	background-color: red;
+	background-color: #ff6230;
 }
 
 .v-table .v-table-cell-content-normal {
-	background-color: green;
+	background-color: #b8b8b8;
 }

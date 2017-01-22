@@ -1,7 +1,6 @@
 package de.innovas.views;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +31,8 @@ public class DefaultView extends VerticalLayout implements View {
 
 	public static final String VIEW_NAME = "";
 
+	private static int MAX_WEIGHT_INDEX = 99;
+
 	@Autowired
 	private WeightEntryService weightEntryService;
 	@Autowired
@@ -43,7 +44,6 @@ public class DefaultView extends VerticalLayout implements View {
 	private RoundInfo roundInfo;
 	private Table weightTable;
 
-	private Map<String, BigDecimal> minWeightMap;
 	private Map<String, WeightEval> roundEvalMap;
 
 	@PostConstruct
@@ -61,7 +61,7 @@ public class DefaultView extends VerticalLayout implements View {
 			roundInfo = roundInfoMap.get(Collections.max(roundInfoMap.keySet()));
 			roundSelect.addValueChangeListener(event -> {
 				roundInfo = (RoundInfo) roundSelect.getValue();
-				minWeightMap = weightEntryService.getMinWeightMap(roundInfo);
+				roundEvalMap = weightEntryService.getWeightEvalMap(roundInfo);
 				fillTable();
 			});
 		}
@@ -74,22 +74,19 @@ public class DefaultView extends VerticalLayout implements View {
 			getUI().getNavigator().navigateTo(WeightByKwView.VIEW_NAME + "/" + roundInfo.getNumber() + "/" + kw);
 		});
 
-		roundEvalMap = new HashMap<>();
-
 		weightTable.setPageLength(weightTable.size());
 		weightTable.setCellStyleGenerator((source, itemId, propertyId) -> {
 			String name = (String) propertyId;
-			if (roundInfo.getParticipants().contains(name)) {
-				BigDecimal val = (BigDecimal) source.getItem(itemId).getItemProperty(propertyId).getValue();
-				WeightEval ret = roundEvalMap.putIfAbsent(name, new WeightEval());
-				if (ret != null && ret.getMinWeight() != null && val != null) {
-					if (val.compareTo(ret.getMinWeight()) == -1) {
-						ret.setMinWeight(val);
-						roundEvalMap.put(name, ret);
-					} else if (val.compareTo(ret.getMinWeight()) == 1) {
-						return "red";
-					}
-				}
+			BigDecimal weight = (roundInfo.getParticipants().contains(name))
+					? (BigDecimal) source.getItem(itemId).getItemProperty(propertyId).getValue() : null;
+			Integer kw = itemId != null ? (Integer) itemId : null;
+			if (kw.compareTo(MAX_WEIGHT_INDEX) == 0)
+				return "normal";
+			if (name == null || weight == null)
+				return null;
+			WeightEval eval = roundEvalMap.get(name);
+			if (kw > eval.getMinWeightKw() && weight.compareTo(getWeightWithMargin(eval.getMinWeight())) == 1) {
+				return "red";
 			}
 			return null;
 		});
@@ -142,7 +139,16 @@ public class DefaultView extends VerticalLayout implements View {
 			}
 			kw++;
 		}
-		weightTable.addItem(createRow(minWeightMap, null, true), kw);
+
+		weightTable.addItem(createRow(getMinWeightMap(), null, true), MAX_WEIGHT_INDEX);
+	}
+
+	private Map<String, BigDecimal> getMinWeightMap() {
+		Map<String, BigDecimal> minWeightMap = new HashMap<>();
+		for (Entry<String, WeightEval> entry : roundEvalMap.entrySet()) {
+			minWeightMap.put(entry.getKey(), entry.getValue().getMinWeight());
+		}
+		return minWeightMap;
 	}
 
 	private Object[] createRow(Map<String, BigDecimal> weightMap, Integer kw, boolean margin) {
