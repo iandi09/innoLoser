@@ -12988,3 +12988,11 @@ h1.no-margin, .v-label-h1.no-margin, h2.no-margin, .v-label-h2.no-margin, h3.no-
 .v-horizontal .v-button {
 	margin-top: 25px;
 }
+
+.v-table .v-table-cell-content-red {
+	background-color: red;
+}
+
+.v-table .v-table-cell-content-normal {
+	background-color: green;
+}

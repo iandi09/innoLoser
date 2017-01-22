@@ -5,6 +5,12 @@
   .v-horizontal .v-button {
     margin-top: 25px;
   }
+  .v-table .v-table-cell-content-red {
+    background-color: red;
+  }
+  .v-table .v-table-cell-content-normal {
+    background-color: green;
+  }
 }
 
 @include inno;
