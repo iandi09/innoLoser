@@ -116,15 +116,13 @@ public class DefaultView extends VerticalLayout implements View {
 			roundSelect.addItem(round);
 		}
 		roundSelect.setValue(roundInfo);
-		if (roundInfo != null && !roundInfo.getParticipants().isEmpty()) {
-			fillTable();
-			weightTable.setVisible(true);
-		} else {
-			weightTable.setVisible(false);
-		}
+		fillTable();
 	}
 
 	private void fillTable() {
+		if (roundInfo != null && !roundInfo.getParticipants().isEmpty() && !weightTable.isVisible()) {
+			weightTable.setVisible(true);
+		}
 		weightTable.addContainerProperty("KW", Integer.class, null);
 		for (String name : roundInfo.getParticipants()) {
 			weightTable.addContainerProperty(name, BigDecimal.class, null);
@@ -140,7 +138,8 @@ public class DefaultView extends VerticalLayout implements View {
 			kw++;
 		}
 
-		weightTable.addItem(createRow(getMinWeightMap(), null, true), MAX_WEIGHT_INDEX);
+		// weightTable.addItem(createRow(getMinWeightMap(), null, true),
+		// MAX_WEIGHT_INDEX);
 	}
 
 	private Map<String, BigDecimal> getMinWeightMap() {

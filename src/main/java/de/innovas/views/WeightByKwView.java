@@ -49,7 +49,6 @@ public class WeightByKwView extends VerticalLayout implements View {
 	private UserService userService;
 
 	private RoundInfo roundInfo;
-	private Map<Integer, RoundInfo> roundInfoMap;
 
 	private Table weightTable;
 	private ComboBox roundSelect;
@@ -59,8 +58,6 @@ public class WeightByKwView extends VerticalLayout implements View {
 
 	@PostConstruct
 	void init() {
-
-		roundInfoMap = roundInfoService.getAllAsMap();
 
 		final HorizontalLayout horizontalLayout = new HorizontalLayout();
 
@@ -106,9 +103,6 @@ public class WeightByKwView extends VerticalLayout implements View {
 				addWeightEntry();
 				Notification.show("Eintrag hinzugefügt");
 				weightField.setValue(null);
-				if (!weightTable.isVisible()) {
-					weightTable.setVisible(true);
-				}
 			} else {
 				Notification.show("Bitte Namen und Gewicht angeben");
 			}
@@ -129,7 +123,9 @@ public class WeightByKwView extends VerticalLayout implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		
+
+		Map<Integer, RoundInfo> roundInfoMap = roundInfoService.getAllAsMap();
+
 		if (roundInfoMap.isEmpty()) {
 			return;
 		}
@@ -157,11 +153,8 @@ public class WeightByKwView extends VerticalLayout implements View {
 		}
 
 		final List<Weight> weightList = weightEntryService.getWeightEntryList(roundInfo, kw);
-		if (!weightList.isEmpty()) {	
+		if (!weightList.isEmpty()) {
 			fillTable(weightList);
-			weightTable.setVisible(true);
-		} else {
-			weightTable.setVisible(false);
 		}
 	}
 
@@ -223,6 +216,9 @@ public class WeightByKwView extends VerticalLayout implements View {
 	}
 
 	private void fillTable(List<Weight> weightList) {
+		if (roundInfo != null && !roundInfo.getParticipants().isEmpty() && !weightTable.isVisible()) {
+			weightTable.setVisible(true);
+		}
 		weightTable.addContainerProperty("#", Integer.class, null);
 		for (String name : roundInfo.getParticipants()) {
 			weightTable.addContainerProperty(name, BigDecimal.class, null);
