@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 import de.innovas.entities.RoundInfo;
-import de.innovas.entities.User;
 
 public interface RoundInfoRepository extends MongoRepository<RoundInfo, String> {
 
