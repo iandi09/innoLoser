@@ -4,16 +4,26 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 
-import org.springframework.data.annotation.Id;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@javax.persistence.Entity
 public class Weight {
 
-	@Id
-	private String id;
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id", updatable = false, nullable = false)
+	private int id;
 
 	private int round;
 	private int kw;
 	private int number;
+	
+	@ElementCollection
+	@Embedded
 	private Map<String, BigDecimal> weightMap;
 
 	private Date creationDate;

@@ -122,24 +122,21 @@ public class DefaultView extends VerticalLayout implements View {
 	private void fillTable() {
 		if (roundInfo != null && !roundInfo.getParticipants().isEmpty() && !weightTable.isVisible()) {
 			weightTable.setVisible(true);
-		}
-		weightTable.addContainerProperty("KW", Integer.class, null);
-		for (String name : roundInfo.getParticipants()) {
-			weightTable.addContainerProperty(name, BigDecimal.class, null);
-		}
-
-		int kw = roundInfo.getStartKw();
-
-		while (kw <= roundInfo.getStartKw() + RoundInfo.ROUND_LENGTH) {
-			Weight weight = weightEntryService.getLatestWeightEntry(roundInfo, kw);
-			if (weight != null) {
-				weightTable.addItem(createRow(weight.getWeightMap(), kw, false), kw);
+			weightTable.addContainerProperty("KW", Integer.class, null);
+			for (String name : roundInfo.getParticipants()) {
+				weightTable.addContainerProperty(name, BigDecimal.class, null);
 			}
-			kw++;
-		}
 
-		// weightTable.addItem(createRow(getMinWeightMap(), null, true),
-		// MAX_WEIGHT_INDEX);
+			int kw = roundInfo.getStartKw();
+
+			while (kw <= roundInfo.getStartKw() + RoundInfo.ROUND_LENGTH) {
+				Weight weight = weightEntryService.getLatestWeightEntry(roundInfo, kw);
+				if (weight != null) {
+					weightTable.addItem(createRow(weight.getWeightMap(), kw, false), kw);
+				}
+				kw++;
+			}
+		}
 	}
 
 	private Map<String, BigDecimal> getMinWeightMap() {

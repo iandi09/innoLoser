@@ -2,20 +2,32 @@ package de.innovas.entities;
 
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+
+@Entity
 public class RoundInfo {
 	
 	public static int ROUND_LENGTH = 26;
 
-	@Id
-	private String id;
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id", updatable = false, nullable = false)
+	private int id;
 
 	private int number;
 
 	private int year;
 	private int startKw;
 
+	@ElementCollection
+	@Embedded
 	private List<String> participants;
 
 	public RoundInfo() {

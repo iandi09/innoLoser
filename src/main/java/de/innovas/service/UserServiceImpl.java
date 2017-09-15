@@ -4,6 +4,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Service;
 
 import com.vaadin.server.VaadinSession;
@@ -13,6 +16,9 @@ import de.innovas.repos.UserRepository;
 import de.innovas.util.PasswordEncoder;
 
 @Service
+@EnableJpaRepositories("de.innovas.repos")
+@ComponentScan(basePackages = { "de.innovas.entities" })
+@EntityScan("de.innovas.entities")  
 public class UserServiceImpl implements UserService {
 	
 	@Autowired

@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import de.innovas.service.UserService;
 
-@SpringBootApplication
+@SpringBootApplication 
 public class InnoloserApplication implements CommandLineRunner {
 	
 	@Autowired
